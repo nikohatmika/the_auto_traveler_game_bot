@@ -17,8 +17,8 @@ func NewEquipmentsUsecase(timeout time.Duration, r Repository) Usecase {
 	}
 }
 
-func (uc *equipmentsUsecase) Find(ctx context.Context) ([]Domain, error) {
-	resp, err := uc.equipmentsRepository.Find(ctx)
+func (uc *equipmentsUsecase) Find(ctx context.Context, eqType string) ([]Domain, error) {
+	resp, err := uc.equipmentsRepository.Find(ctx, eqType)
 	if err != nil {
 		return []Domain{}, err
 	}

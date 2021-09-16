@@ -1,23 +1,24 @@
-package events
+package equipments
 
 import (
-	"auto_traveler/bussiness/events"
+	"auto_traveler/bussiness/equipments"
 	"time"
 )
 
-type Events struct {
+type Equipments struct {
 	ID 			int
 	CreatedAt	time.Time
 	UpdatedAt 	time.Time		
 	Type		string		
 	Name 		string	
 	Description string	
-	GoldReward 	int		
-	XPReward	int	
+	ATK 		int			
+	DEF			int		
+	HP			int		
 }
 
-// func fromDomain(domain *events.Domain) *Events {
-// 	return &Events{
+// func fromDomain(domain *equipments.Domain) *Equipments {
+// 	return &Equipments{
 // 		Name:           domain.Name,
 // 		Type: 			domain.Type,
 // 		Description: 	domain.Description,
@@ -28,17 +29,18 @@ type Events struct {
 // 	}
 // }
 
-func (model *Events) ToDomain() (domain events.Domain) {
+func (model *Equipments) ToDomain() (domain equipments.Domain) {
 	if model != nil {
-		domain = events.Domain{
+		domain = equipments.Domain{
 			ID:				model.ID,
 			CreatedAt:      model.CreatedAt,
 			UpdatedAt:      model.UpdatedAt,
 			Type: 			model.Type,
 			Name:       	model.Name,
 			Description: 	model.Description,
-			GoldReward: 	model.GoldReward,
-			XPReward: 		model.XPReward,	
+			ATK: 			model.ATK,
+			DEF: 			model.DEF,
+			HP: 			model.HP,	
 		}
 	}
 	return domain

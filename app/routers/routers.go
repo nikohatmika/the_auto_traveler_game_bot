@@ -7,6 +7,7 @@ import (
 	"auto_traveler/controller/player_auth"
 	"auto_traveler/controller/players"
 
+	"auto_traveler/controller/equipments"
 	"auto_traveler/controller/events"
 
 	"github.com/labstack/echo/v4"
@@ -19,6 +20,7 @@ type ControllerList struct {
 	AdminController     	admin.AdminController
 	PlayersController     	players.PlayersController
 	EventsController 		events.EventsController
+	EquipmentsController 	equipments.EquipmentsController
 }
 
 func (c *ControllerList) RouteRegister(e *echo.Echo) {
@@ -37,6 +39,9 @@ func (c *ControllerList) RouteRegister(e *echo.Echo) {
 
 	eventsRouter := r.Group("/events")
 	eventsRouter.GET("", c.EventsController.Find)
+
+	equipmentsRouter := r.Group("/equipments")
+	equipmentsRouter.GET("", c.EquipmentsController.Find)
 
 
 	// API ADMIN

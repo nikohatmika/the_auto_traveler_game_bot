@@ -19,6 +19,10 @@ import (
 	eventsController "auto_traveler/controller/events"
 	eventsRepository "auto_traveler/driver/database/events"
 
+	equipmentsUsecase "auto_traveler/bussiness/equipments"
+	equipmentsController "auto_traveler/controller/equipments"
+	equipmentsRepository "auto_traveler/driver/database/equipments"
+
 	playerAuthUsecase "auto_traveler/bussiness/player_auth"
 	playerAuthController "auto_traveler/controller/player_auth"
 
@@ -78,6 +82,10 @@ func main() {
 	eventsUc := eventsUsecase.NewEventsUsecase(timeoutContext, eventsRepo)
 	eventsCtrl := eventsController.NewEventsController(e, eventsUc)
 
+	equipmentsRepo := equipmentsRepository.NewEquipmentsRepository(db)
+	equipmentsUc := equipmentsUsecase.NewEquipmentsUsecase(timeoutContext, equipmentsRepo)
+	equipmentsCtrl := equipmentsController.NewEquipmentsController(e, equipmentsUc)
+
 	routesInit := _routes.ControllerList{
 		JWTMiddleware:          &configJWT,
 		AdminAuthController:    *adminAuthCtrl,
@@ -85,6 +93,7 @@ func main() {
 		PlayerAuthController: 	*playerAuthCtrl,
 		PlayersController:     	*playerCtrl,
 		EventsController: 		*eventsCtrl,
+		EquipmentsController: 	*equipmentsCtrl,
 	}
 
 	routesInit.RouteRegister(e)

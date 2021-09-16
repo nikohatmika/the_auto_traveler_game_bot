@@ -7,6 +7,7 @@ import (
 	"time"
 
 	adminRepo "auto_traveler/driver/database/admin"
+	equipmentsRepo "auto_traveler/driver/database/equipments"
 	eventsRepo "auto_traveler/driver/database/events"
 	playersRepo "auto_traveler/driver/database/players"
 	"auto_traveler/helper/encrypt"
@@ -43,21 +44,31 @@ func (config *ConfigDB) InitialDB() *gorm.DB {
 }
 
 func Migrate(DB *gorm.DB) {
-	DB.AutoMigrate(&adminRepo.Admin{}, &playersRepo.Players{}, &eventsRepo.Events{})
+	DB.AutoMigrate(
+		&adminRepo.Admin{},
+		&playersRepo.Players{},
+		&eventsRepo.Events{},
+		&equipmentsRepo.Equipments{},
+	)
 }
 
 func Seeder(db *gorm.DB) {
 	admin := []adminRepo.Admin{}
 	events := []eventsRepo.Events{}
+	equipments := []equipmentsRepo.Equipments{}
 	db.Find(&admin)
 	db.Find(&events)
-
-	fmt.Println(encrypt.Hash("admin"))
+	db.Find(&equipments)
 
 	if len(admin) == 0 {
 		password, _ := encrypt.Hash("admin")
 		var admin = []adminRepo.Admin{
-			{Name: "Superadmin", Email: "superadmin@admin.com", Password: sql.NullString{String: password, Valid: true}, CreatedAt: time.Now(), UpdatedAt: time.Now()},
+			{	Name: "Superadmin",
+				Email: "superadmin@admin.com",
+				Password: sql.NullString{String: password, Valid: true},
+				CreatedAt: time.Now(),
+				UpdatedAt: time.Now(),
+			},
 		}
 		db.Create(&admin)
 	}
@@ -84,6 +95,32 @@ func Seeder(db *gorm.DB) {
 			},
 		}
 		db.Create(&events)
+	}
+
+	if len(equipments) == 0 {
+		equipments := []equipmentsRepo.Equipments{
+			{	ID: 1,
+				CreatedAt: time.Now(),
+				UpdatedAt: time.Now(),
+				Type: "weapon",
+				Name: "Prototype Rancour",
+				Description: "A rancour known as the most sharp blade in the world, thought it just its prototype",
+				ATK: 10,
+				DEF: 5,
+				HP: 0,
+			},
+			{	ID: 2,
+				CreatedAt: time.Now(),
+				UpdatedAt: time.Now(),
+				Type: "bounty",
+				Name: "Prototype Armor",
+				Description: "A tough armor that can deny a sword hit, thought we don't know how durable is it to the second time and so on",
+				ATK: 0,
+				DEF: 5,
+				HP: 10,
+			},
+		}
+		db.Create(&equipments)
 	}
 
 }
