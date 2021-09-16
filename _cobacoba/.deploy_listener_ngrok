@@ -1,0 +1,2 @@
+curl -F "url=https://780d-202-80-218-66.ngrok.io"  https://api.telegram.org/bot1951910918:AAFxydG10KOV-35E48M4sYZT9w08qvoG_HY/setWebhook
+curl --data "url=https://us-central1-the-auto-traveler.cloudfunctions.net/telegram-bot-handler"  https://api.telegram.org/bot1951910918:AAFxydG10KOV-35E48M4sYZT9w08qvoG_HY/setWebhook

@@ -1,13 +1,16 @@
 package telegrambot
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/http/httptest"
 	"net/url"
 	"os"
 	"strconv"
+	"testing"
 )
 
 type Update struct {
@@ -60,5 +63,32 @@ func sendTextToTelegramChat(chatId int, text string) (string, error) {
 	fmt.Printf("Body of Telegram Response: %s", bodyString)
 
 	return bodyString, nil
+}
+
+func TestParseUpdateMessageWithText(t *testing.T) {
+	var msg = Message{
+		Text: "hello world",
+		Chat: Chat{},
+	}
+
+	var update = Update{
+		UpdateId: 1,
+		Message:  msg,
+	}
+
+	requestBody, err := json.Marshal(update)
+	if err != nil {
+		t.Errorf("Failed to marshal update in json, got %s", err.Error())
+	}
+	req := httptest.NewRequest("POST", "http://myTelegramWebHookHandler.com/secretToken", bytes.NewBuffer(requestBody))
+
+	var updateToTest, errParse = parseTelegramRequest(req)
+	if errParse != nil {
+		t.Errorf("Expected a <nil> error, got %s", errParse.Error())
+	}
+	if *updateToTest != update {
+		t.Errorf("Expected update %v, got %v", update, updateToTest)
+	}
+
 }
 
