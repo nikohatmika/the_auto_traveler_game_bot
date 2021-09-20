@@ -4,6 +4,7 @@ import (
 	"auto_traveler/app/middleware"
 	"auto_traveler/controller/admin"
 	"auto_traveler/controller/admin_auth"
+	"auto_traveler/controller/event_histories"
 	"auto_traveler/controller/player_auth"
 	"auto_traveler/controller/players"
 
@@ -14,13 +15,14 @@ import (
 )
 
 type ControllerList struct {
-	JWTMiddleware           *middleware.ConfigJWT
-	AdminAuthController     admin_auth.AdminAuthController
-	PlayerAuthController  	player_auth.PlayerAuthController
-	AdminController     	admin.AdminController
-	PlayersController     	players.PlayersController
-	EventsController 		events.EventsController
-	EquipmentsController 	equipments.EquipmentsController
+	JWTMiddleware           	*middleware.ConfigJWT
+	AdminAuthController     	admin_auth.AdminAuthController
+	PlayerAuthController  		player_auth.PlayerAuthController
+	AdminController     		admin.AdminController
+	PlayersController     		players.PlayersController
+	EventHistoriesController	event_histories.EventHistoriesController
+	EventsController 			events.EventsController
+	EquipmentsController 		equipments.EquipmentsController
 }
 
 func (c *ControllerList) RouteRegister(e *echo.Echo) {
@@ -36,6 +38,7 @@ func (c *ControllerList) RouteRegister(e *echo.Echo) {
 	playerRouter := r.Group("/player")
 	playerRouter.Use(playerMiddleware.VerifyRole)
 	playerRouter.POST("/status", c.PlayersController.FindByToken)
+	playerRouter.POST("/eventHistories", c.EventHistoriesController.FindByToken)
 
 	eventsRouter := r.Group("/events")
 	eventsRouter.GET("", c.EventsController.Find)

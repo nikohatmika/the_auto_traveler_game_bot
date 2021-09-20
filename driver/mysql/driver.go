@@ -8,6 +8,7 @@ import (
 
 	adminRepo "auto_traveler/driver/database/admin"
 	equipmentsRepo "auto_traveler/driver/database/equipments"
+	eventHistoriesRepo "auto_traveler/driver/database/event_histories"
 	eventsRepo "auto_traveler/driver/database/events"
 	playersRepo "auto_traveler/driver/database/players"
 	"auto_traveler/helper/encrypt"
@@ -49,6 +50,7 @@ func Migrate(DB *gorm.DB) {
 		&playersRepo.Players{},
 		&eventsRepo.Events{},
 		&equipmentsRepo.Equipments{},
+		&eventHistoriesRepo.EventHistories{},
 	)
 }
 

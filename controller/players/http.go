@@ -5,6 +5,7 @@ import (
 	"auto_traveler/bussiness/players"
 	"auto_traveler/controller"
 	"auto_traveler/controller/players/response"
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -21,6 +22,8 @@ func NewPlayerController(e *echo.Echo, uc players.Usecase) *PlayersController {
 }
 
 func (ctrl *PlayersController) FindByToken(c echo.Context) error {
+	fmt.Println("ISI C", c)
+
 	ctx := c.Request().Context()
 	player := middleware.GetPlayer(c)
 
