@@ -3,7 +3,6 @@ package players
 import (
 	"auto_traveler/bussiness/players"
 	"context"
-	"time"
 
 	"gorm.io/gorm"
 )
@@ -16,21 +15,6 @@ func NewPlayersRepository(conn *gorm.DB) players.Repository {
 	return &playersRepository{
 		conn: conn,
 	}
-}
-
-func (r *playersRepository) Find(ctx context.Context) ([]players.Domain, error) {
-	res := []Players{}
-	err := r.conn.Where("deleted_at", nil).Find(&res).Error
-	if err != nil {
-		return []players.Domain{}, err
-	}
-
-	playerDomain := []players.Domain{}
-	for _, value := range res {
-		playerDomain = append(playerDomain, *value.ToDomain())
-	}
-
-	return playerDomain, nil
 }
 
 func (r *playersRepository) FindByID(ctx context.Context, ID int) (players.Domain, error) {
@@ -73,12 +57,3 @@ func (r *playersRepository) Update(ctx context.Context, ID int, data *players.Do
 	return *model.ToDomain(), err
 }
 
-func (r *playersRepository) Delete(ctx context.Context, ID int) (err error) {
-	model := Players{}
-	result := r.conn.Model(&model).Where("id = ?", ID).Update("deleted_at", time.Now().UTC())
-	if result.Error != nil {
-		return result.Error
-	}
-
-	return err
-}
